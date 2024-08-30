@@ -1,8 +1,8 @@
 from db.connection import session
 
 def get_conection():
+    db_session = session()
     try:
-        db_session = session()
-        yield db_session
-    except:
+         yield db_session
+    finally:
         db_session.close()
