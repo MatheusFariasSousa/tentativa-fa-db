@@ -3,7 +3,7 @@ from fastapi import Depends,APIRouter,status,HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from db.model import User
 from routes.deps import get_conection
-from schema.user_schema import User_schema,User_Schema_Output
+from schema.user_schema import User_schema,User_Schema_Output,User_Schema_Act
 from schema.token_schema import Token
 from use_cases.user_use_case import User_use_cases
 from passlib.context import CryptContext
@@ -31,10 +31,10 @@ def get_all(db_session:Session = Depends(get_conection)):
     uc = User_use_cases(db_session=db_session)
     return uc.get_all()
 
-@router.delete("/delete")
-def delete(db_session:Session=Depends(get_conection),current_user:User = Depends(get_current_user)):
+@router.delete("/delete/{id}")
+def delete(id:int,db_session:Session=Depends(get_conection)):
     uc = User_use_cases(db_session=db_session)
-    uc.delete_user(current_user.id)
+    uc.delete_user(id)
     return status.HTTP_200_OK
     
 
@@ -43,17 +43,33 @@ def put(id:int,user:User_schema,db_session:Session=Depends(get_conection)):
     uc = User_use_cases(db_session=db_session)
     return uc.put_user(id=id,user=user)
 
-@router.post("/token",response_model=Token,tags=["Token"])
+@router.put("/put_act/{id}",response_model=User_Schema_Output)
+def put_act(id:int,user_act:User_Schema_Act,db_session:Session=Depends(get_conection)):
+    
+    user = db_session.query(User).where(User.id == id).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+    user.is_active = user_act.is_active
+    return user
+    
+    
+    
+
+    
+
+    
+
+'''@router.post("/token",response_model=Token,tags=["Token"])
 def user_token(forms:OAuth2PasswordRequestForm = Depends(),db_session:Session=Depends(get_conection)):
     user = db_session.query(User).where(User.name==forms.username).first()
     if not user or not crypt.verify(forms.password,user.password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="Usuario ou senha incorreto")
     access_token = create_access_token(data={"sub":user.name})
 
-    return {"access_token": access_token,"token_type":"bearer"}
+    return {"access_token": access_token,"token_type":"bearer"}'''
 
 
-@router.get("/get_you")
+'''@router.get("/get_you")
 def get_you(db_session:Session=Depends(get_conection),current_user:User = Depends(get_current_user)):
     person = db_session.query(User).where(User.name==current_user.name).first()
-    return person
+    return person'''

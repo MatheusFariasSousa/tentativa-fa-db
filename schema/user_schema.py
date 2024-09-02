@@ -11,4 +11,8 @@ class User_Schema_Output(BaseModel):
     name:str
     email:str
     cpf_cnpj:str
+    is_active:bool
+
+class User_Schema_Act(BaseModel):
+    is_active:bool
 
