@@ -44,13 +44,22 @@ def put(id:int,user:User_schema,db_session:Session=Depends(get_conection)):
     return uc.put_user(id=id,user=user)
 
 @router.put("/put_act/{id}",response_model=User_Schema_Output)
-def put_act(id:int,user_act:User_Schema_Act,db_session:Session=Depends(get_conection)):
+def put_act(id:int,db_session:Session=Depends(get_conection)):
     
     user = db_session.query(User).where(User.id == id).first()
     if not user:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
-    user.is_active = user_act.is_active
+    if user.is_active:
+        user.is_active = False
+        db_session.add(user)
+        db_session.commit()
+        return user
+    user.is_active = True
+    db_session.add(user)
+    db_session.commit()
     return user
+    
+
     
     
     
