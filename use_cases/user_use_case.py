@@ -28,6 +28,7 @@ class User_use_cases:
         person = self.db_session.query(User).where(User.id == id).first()
         if not person:
             raise HTTPException(detail="This is a invalid id",status_code=status.HTTP_400_BAD_REQUEST)
+        
         return person
     
     

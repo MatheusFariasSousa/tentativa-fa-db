@@ -14,11 +14,6 @@ crypt =CryptContext(schemes=["sha256_crypt"])
 
 router = APIRouter(prefix="/user",tags=["User"])
 
-@router.post("/post")
-def post_user(user:User_schema,db_session:Session=Depends(get_conection)):
-    uc = User_use_cases(db_session=db_session)
-    uc.post_user(user=user)
-    return status.HTTP_200_OK
 
 @router.get("/get/{id}",response_model=User_Schema_Output)
 def get_by_id(id:int,db_session:Session=Depends(get_conection)):
@@ -31,10 +26,16 @@ def get_all(db_session:Session = Depends(get_conection)):
     uc = User_use_cases(db_session=db_session)
     return uc.get_all()
 
+@router.post("/post")
+def post_user(user:User_schema,db_session:Session=Depends(get_conection)):
+    uc = User_use_cases(db_session=db_session)
+    uc.post_user(user=user)
+    return status.HTTP_200_OK
+
 @router.delete("/delete/{id}")
 def delete(id:int,db_session:Session=Depends(get_conection)):
     uc = User_use_cases(db_session=db_session)
-    uc.delete_user(id)
+    uc.delete_user(id=id)
     return status.HTTP_200_OK
     
 
@@ -68,14 +69,14 @@ def put_act(id:int,db_session:Session=Depends(get_conection)):
 
     
 
-'''@router.post("/token",response_model=Token,tags=["Token"])
+"""@router.post("/token",response_model=Token,tags=["Token"])
 def user_token(forms:OAuth2PasswordRequestForm = Depends(),db_session:Session=Depends(get_conection)):
     user = db_session.query(User).where(User.name==forms.username).first()
     if not user or not crypt.verify(forms.password,user.password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="Usuario ou senha incorreto")
     access_token = create_access_token(data={"sub":user.name})
 
-    return {"access_token": access_token,"token_type":"bearer"}'''
+    return {"access_token": access_token,"token_type":"bearer"}"""
 
 
 '''@router.get("/get_you")

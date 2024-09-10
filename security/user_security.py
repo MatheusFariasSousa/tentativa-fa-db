@@ -7,7 +7,7 @@ from schema.token_schema import TokenData
 from zoneinfo import ZoneInfo
 from db.model import User
 from jwt import encode, decode
-from jwt.exceptions import PyJWTError,DecodeError   
+from jwt.exceptions import DecodeError   
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/token")
@@ -32,7 +32,6 @@ def get_current_user(db_session:Session = Depends(get_conection),token:str = Dep
     try:
         payload = decode(token,SECRET_KEY,algorithms=[ALGORITHM])
         username = payload.get("sub")
-        print(username)
         if not username:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
         token_data = TokenData(username=username)
@@ -48,5 +47,5 @@ def get_current_user(db_session:Session = Depends(get_conection),token:str = Dep
 
 
 
-    ...
+    
                      
