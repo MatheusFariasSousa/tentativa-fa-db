@@ -1,5 +1,6 @@
 from sqlalchemy.orm import registry,Mapped,mapped_column
 from db.connection import engine
+from sqlalchemy import ForeignKey
 
 table_registry = registry()
 
@@ -22,6 +23,22 @@ class Product():
     name:Mapped[str] = mapped_column(nullable=False)
     quantity:Mapped[int] = mapped_column(nullable=False)
     price:Mapped[int]=mapped_column(nullable=False)
+    user_id:Mapped[int]=mapped_column(ForeignKey("User.id"))
+
+@table_registry.mapped_as_dataclass
+class Sale():
+    __tablename__="Sale"
+
+    id:Mapped[int] = mapped_column(primary_key=True,autoincrement=True,init=False)
+    user_id:Mapped[int]=mapped_column(ForeignKey("User.id"))
+    product_id:Mapped[int]=mapped_column(ForeignKey("Product.id"))
+    quantity:Mapped[int] = mapped_column(nullable=False)
+    price:Mapped[int]=mapped_column(nullable=False)
+
+
+
+
+
 
 
 table_registry.metadata.create_all(engine)

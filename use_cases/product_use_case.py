@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from schema.product_schema import Product_Schema
 from fastapi import HTTPException,status
-from db.model import Product
+from db.model import Product,User
 
 
 class Product_Use_Case:
@@ -11,7 +11,10 @@ class Product_Use_Case:
 
 
     def post(self,product:Product_Schema):
-        produto = Product(name=product.name,quantity=product.quantity,price=product.price)
+        person= self.db_session.query(User).where(User.id==product.user_id).first()
+        if not person:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail="User not Found")
+        produto = Product(name=product.name,quantity=product.quantity,price=product.price,user_id=product.user_id)
         self.db_session.add(produto)
         self.db_session.commit()
 
