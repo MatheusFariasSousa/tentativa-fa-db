@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from routes.user_route import router
 from routes.product_route import client
+from routes.sale_route import rota
 
 app = FastAPI()
 
@@ -10,6 +11,7 @@ def health_check():
 
 app.include_router(router=router)
 app.include_router(router=client)
+app.include_router(router=rota)
 
 
 

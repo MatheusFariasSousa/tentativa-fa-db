@@ -35,7 +35,7 @@ class User_use_cases:
     def get_all(self):
         lista = self.db_session.query(User).all()  
         for person in lista:
-            yield {"name":person.name,"email":person.email,"cpf_cnpj":person.cpf_cnpj,"is_active":person.is_active}
+            yield {"id":person.id,"name":person.name,"email":person.email,"cpf_cnpj":person.cpf_cnpj,"is_active":person.is_active}
 
     
     def delete_user(self,id:int):

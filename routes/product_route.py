@@ -22,3 +22,8 @@ def put_prodcut(id:int,product:Product_Schema,db_session:Session=Depends(get_con
     uc.put(product=product,id=id)
     return status.HTTP_200_OK
 
+@client.get("/get-all")
+def get_all(db_session:Session=Depends(get_conection)):
+    uc = Product_Use_Case(db_session=db_session)
+    return uc.list_product
+
