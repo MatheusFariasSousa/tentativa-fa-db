@@ -11,11 +11,17 @@ class Product_Use_Case:
 
 
     def post(self,product:Product_Schema):
+<<<<<<< HEAD
         person = self.db_session.query(User).where(User.id==product.user_id).first()
         print(person)
         if not person:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail="User not found")
         print(person)
+=======
+        person= self.db_session.query(User).where(User.id==product.user_id).first()
+        if not person:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail="User not Found")
+>>>>>>> 917240fe7ed23c246a5cea183a217d046661eb9c
         produto = Product(name=product.name,quantity=product.quantity,price=product.price,user_id=product.user_id)
         self.db_session.add(produto)
         self.db_session.commit()
