@@ -13,7 +13,7 @@ class User():
     email:Mapped[str] = mapped_column(nullable=False)
     password:Mapped[str] = mapped_column(nullable=False)
     cpf_cnpj:Mapped[str] = mapped_column(nullable=True)
-    is_active:Mapped[bool] = mapped_column(nullable=False,default=True)
+    is_active:Mapped[bool] = mapped_column(nullable=True,default=True)
 
 @table_registry.mapped_as_dataclass
 class Product():
