@@ -24,11 +24,17 @@ def success_page(request: Request):
     return templates.TemplateResponse("sucesso.html", {"request": request})
 
 @front_router.post("/result-form")
-def  post_front(db_session:Session = Depends(get_conection),nome:str=Form(...),cpf:str=Form(...),senha:str=Form(...),email:str=Form(...)):
+def post_front(db_session:Session = Depends(get_conection),nome:str=Form(...),cpf:str=Form(...),senha:str=Form(...),email:str=Form(...)):
     person = User_schema(name=nome,email=email,password=senha,cpf_cnpj=cpf,is_active=True)
     uc = User_use_cases(db_session=db_session)
     uc.post_user(person)
     print("!")
     return RedirectResponse(url="/front/sucesso", status_code=303)
 
+@front_router.get("/users")
+def get_all(request:Request,db_session:Session = Depends(get_conection)):
+    users = db_session.query(User).all()
+    return templates.TemplateResponse("users.html",{"request":request,"users":users})
+    
+    
 

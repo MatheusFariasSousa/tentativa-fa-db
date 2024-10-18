@@ -18,6 +18,11 @@
     const [cpf, setCpf] = React.useState('');
     const [senha, setSenha] = React.useState('');
 
+    const goToUsers = () => {
+                window.location.href = 'http://localhost:8000/front/users';
+            };
+    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         /* COMENTEI A PARTE DO ALERT PORQUE ELE MOSTRA OS DADOS CADASTRADOS alert(`Nome: ${nome}\nEmail: ${email}\nCPF: ${cpf}\nSenha: ${senha}`);*/
@@ -28,13 +33,13 @@
     formData.append('senha', senha);
 
     try {
-        const response = await fetch('http://localhost:8000/front/result-form', {
+        const response = await fetch('http://127.0.0.1:8000/front/result-form', {
             method: 'POST',
             body: formData, 
         });
 
         if (response.redirected) {
-            window.location.href = response.url;
+            window.location.href = 'http://127.0.0.1:8000/front/sucesso';
         } else {
             console.error('Erro ao criar usuário:', response.statusText);
         }
@@ -84,9 +89,20 @@
                     required
                 />
             </label>
-            <button type="submit">Cadastrar</button>
+            
+                            <button type="submit">Cadastrar</button>
+                            <button type="button" onClick={goToUsers}>Ver usuarios</button>
+                        
+            
+            
+            
+            
+            
         </form>
+        
+        
     </div>
+    
     );
 }
 

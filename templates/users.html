@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Users</h1>
+    {% for user in users %}
+    <li>{{user.id}} - {{user.name}} - {{user.email}} - {{user.cpf}}
+        <br>
+        <hr>
+    </li>
+    {% else %}
+    <li>Não existe usuarios</li>
+    <br>
+    <hr>
+    {% endfor %}
+    
+</body>
+</html>
