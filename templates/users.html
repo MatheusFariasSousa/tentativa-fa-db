@@ -1,23 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Users List</title>
+  <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <link  rel="stylesheet" href="/static/users_style.css">
 </head>
-
 <body>
-    <h1>Users</h1>
-    {% for user in users %}
-    <li>{{user.id}} - {{user.name}} - {{user.email}} - {{user.cpf}}
-        <br>
-        <hr>
-    </li>
-    {% else %}
-    <li>Não existe usuarios</li>
-    <br>
-    <hr>
-    {% endfor %}
-    
+  <div id="root"></div>
+
+  <script type="text/babel">
+    function App() {
+      const [users, setUsers] = React.useState([]);
+      const [formData, setFormData] = React.useState({
+        name: "",
+        email: "",
+        password: "",
+      });
+            
+
+      
+      React.useEffect(() => {
+        fetch("/front/users_list")
+          .then(response => response.json())
+          .then(data => setUsers(data))
+          .catch(err => console.error("Erro ao buscar usuários:", err));
+      }, []);
+
+      const handleEdit = (user) => {
+        setFormData({
+          name: user.name,
+          email: user.email,
+          password: user.password,
+        });
+      };
+
+      const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+      };
+
+      return (
+        <div>
+          
+          <h2>Users List</h2>
+          <form>
+            <label>
+              Name:
+              <input id="name" type="text" name="name" value={formData.name}
+              onChange={handleChange} />
+            </label>
+            <br />
+            <label>
+              Email:
+              <input id="email" type="email" name="email" 
+              value={formData.email}
+                onChange={handleChange}/>
+            </label>
+            <br />
+            <label>
+              Password:
+              <input id="password" type="password" name="password" 
+              value={formData.password}
+              onChange={handleChange}/>
+            </label>
+            <br />
+            <br />
+            <button id="botao">Editar</button> 
+          </form>
+
+          
+          <h2>Users List</h2>
+          <ul>
+            {users.length > 0 ? (
+              users.map((user) => (
+                <li key={user.id}>
+                  Id: {user.id} | Name: {user.name} | Email: {user.email}
+                  <button
+                  id="editar"
+                    className="edit-user"
+                    type="button"
+                    onClick={() => handleEdit(user)}
+                  >
+                    Update User
+                  </button> 
+                  <hr />
+
+                </li>
+              ))
+            ) : (
+              <p>No users found.</p>
+            )}
+          </ul>
+        </div>
+      );
+    }
+
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
 </body>
 </html>

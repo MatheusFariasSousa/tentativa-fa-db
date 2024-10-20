@@ -3,10 +3,11 @@ from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.requests import Request
 from sqlalchemy.orm import Session
+from typing import List
 from routes.deps import get_conection
 from use_cases.user_use_case import User_use_cases
 from passlib.context import CryptContext
-from schema.user_schema import User_schema,User_Schema_Output,User_Schema_Act
+from schema.user_schema import User_schema,User_Schema_Front
 from db.model import User
 
 front_router = APIRouter(prefix="/front",tags=["Front"])
@@ -31,10 +32,14 @@ def post_front(db_session:Session = Depends(get_conection),nome:str=Form(...),cp
     print("!")
     return RedirectResponse(url="/front/sucesso", status_code=303)
 
-@front_router.get("/users")
-def get_all(request:Request,db_session:Session = Depends(get_conection)):
+@front_router.get("/users-page")
+def get_page(request:Request):
+    return templates.TemplateResponse("users.html",{"request":request})
+
+@front_router.get("/users_list", response_model=List[User_Schema_Front])
+def get_users(db_session: Session = Depends(get_conection)):
     users = db_session.query(User).all()
-    return templates.TemplateResponse("users.html",{"request":request,"users":users})
+    return users 
     
     
 

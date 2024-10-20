@@ -16,4 +16,11 @@ class User_Schema_Output(BaseModel):
 class User_Schema_Act(BaseModel):
     is_active:bool
 
+class User_Schema_Front(BaseModel):
+    id:int
+    name:str
+    email:str
+    password:str
+    cpf_cnpj:str
+
 

@@ -1,0 +1,25 @@
+#editar{
+    margin: 10px;
+    background-color: aqua;
+    border-radius: 14px;
+    cursor: pointer;
+    border: none;
+    background-color:  #b4cfe8e0;
+    border: 3px solid #5d9bd4e0;
+}
+#editar:hover{
+    background-color: #d8e4f0e0 ;
+}
+
+#botao{
+    margin: 5px;
+    background-color: aqua;
+    border-radius: 14px;
+    cursor: pointer;
+    border: none;
+    background-color:  #b4cfe8e0;
+    border: 3px solid #5d9bd4e0;
+}
+#botao:hover{
+    background-color: #d8e4f0e0 ;
+}
