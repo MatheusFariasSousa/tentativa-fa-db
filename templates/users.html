@@ -16,6 +16,7 @@
     function App() {
       const [users, setUsers] = React.useState([]);
       const [formData, setFormData] = React.useState({
+        id:"",
         name: "",
         email: "",
         password: "",
@@ -31,7 +32,12 @@
       }, []);
 
       const handleEdit = (user) => {
+        window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+        })
         setFormData({
+          id:user.id,
           name: user.name,
           email: user.email,
           password: user.password,
@@ -46,11 +52,39 @@
         }));
       };
 
+      
+        
+      const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const aformData = new FormData();
+  aformData.append('id', formData.id);
+  aformData.append('name', formData.name); // Nome correto conforme o backend
+  aformData.append('email', formData.email);
+  aformData.append('password', formData.password);
+
+  try {
+    const response = await fetch('http://127.0.0.1:8000/front/put-user', {
+      method: 'POST',
+      body: aformData, // Aqui estava incorreto no código anterior
+    });
+
+    if (response.redirected) {
+      window.location.href = response.url;
+    } else {
+      console.error('Erro ao criar usuário:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Erro ao enviar dados:', error);
+  }
+};
+
       return (
         <div>
           
           <h2>Users List</h2>
-          <form>
+          <form onSubmit={handleSubmit} className="form">
+            
             <label>
               Name:
               <input id="name" type="text" name="name" value={formData.name}
@@ -72,7 +106,7 @@
             </label>
             <br />
             <br />
-            <button id="botao">Editar</button> 
+            <button type='submit' id="botao">Editar</button> 
           </form>
 
           

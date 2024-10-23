@@ -40,6 +40,23 @@ def get_page(request:Request):
 def get_users(db_session: Session = Depends(get_conection)):
     users = db_session.query(User).all()
     return users 
+
+@front_router.post("/put-user")
+def put_user(db_session:Session = Depends(get_conection),name:str=Form(...),id:int=Form(...),password:str=Form(...),email:str=Form(...)):
+    person = db_session.query(User).where(User.id == id).first()
+    print(1)
+    person.email = email
+    person.name = name
+    person.password = password
+    db_session.add(person)
+    try:
+        db_session.commit()
+        return RedirectResponse(url="/front/users-page", status_code=303)
+
+    except:
+        return "Erro!"
+
+
     
     
 
