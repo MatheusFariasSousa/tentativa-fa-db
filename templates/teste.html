@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modal Example</title>
+  <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script src="https://unpkg.com/@mui/material@5.0.0/umd/material-ui.development.js"></script>
+  <script src="https://unpkg.com/@emotion/react@11.0.0/umd/emotion-react.umd.min.js"></script>
+  <script src="https://unpkg.com/@emotion/styled@11.0.0/umd/emotion-styled.umd.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+    const { Button, Modal, Box } = MaterialUI;
+    
+
+    const boxStyle = {
+      backgroundColor: 'white',
+      padding: '20px',
+      margin: '15% auto',
+      width: '300px',
+    };
+
+    function App() {
+      const [open, setOpen] = useState(false);
+
+      const handleOpen = () => setOpen(true);
+      const handleClose = () => setOpen(false);
+
+      return (
+        <div>
+          <Button variant="contained" color="primary" onClick={handleOpen}>
+            Open Modal
+          </Button>
+          <Modal open={open} onClose={handleClose}>
+            <Box style={boxStyle}>
+              <h2>Modal Content</h2>
+              <form>
+      <label>Enter your name:
+        <input type="text" />
+      </label>
+      <Button variant="contained" color="primary" onClick={handleClose}>
+      </Button>
+    </form>
+            </Box>
+          </Modal>
+        </div>
+      );
+    }
+
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
+</body>
+</html>

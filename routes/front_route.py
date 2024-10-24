@@ -58,5 +58,8 @@ def put_user(db_session:Session = Depends(get_conection),name:str=Form(...),id:i
 
 
     
+@front_router.get("/testando")
+def get_teste(request:Request):
+    return templates.TemplateResponse("teste.html",{"request":request})
     
 
